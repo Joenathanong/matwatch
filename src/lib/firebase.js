@@ -14,12 +14,12 @@ import {
 } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey: "AIzaSyAxEMvIKXo9Py1O_EC19OdXgA4B-Vl1hnM",
+  authDomain: "matwatch-prod.firebaseapp.com",
+  projectId: "matwatch-prod",
+  storageBucket: "matwatch-prod.firebasestorage.app",
+  messagingSenderId: "766034162174",
+  appId: "1:766034162174:web:0dacf8dac9f1cb5b45d0af"
 }
 
 const app = initializeApp(firebaseConfig)
