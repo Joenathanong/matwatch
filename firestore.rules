@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: check if user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Helper: get user role from /users/{uid}
+    function userRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    // Materials: all authenticated users can read
+    // PPIC and Warehouse can write; QC can only update (for QC fields)
+    match /materials/{docId} {
+      allow read: if isAuth();
+      allow create: if isAuth() && (userRole() == 'PPIC' || userRole() == 'Warehouse');
+      allow update: if isAuth();   // role-level enforcement done in app logic
+      allow delete: if isAuth() && userRole() == 'PPIC';
+    }
+
+    // Audit log: all can read, all can create (append-only)
+    match /audit_log/{docId} {
+      allow read: if isAuth();
+      allow create: if isAuth();
+      allow update, delete: if false;
+    }
+
+    // Users: only self can read their own doc; only admin can write
+    match /users/{userId} {
+      allow read: if isAuth() && request.auth.uid == userId;
+      allow write: if false; // manage via Firebase Console or Admin SDK
+    }
+  }
+}
